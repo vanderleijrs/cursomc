@@ -1,7 +1,5 @@
 package com.vanderlei.cursomc.resources;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vanderlei.cursomc.domain.Categoria;
 import com.vanderlei.cursomc.services.CategoriaService;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
@@ -20,7 +20,7 @@ public class CategoriaResource {
 	private CategoriaService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id){
+	public ResponseEntity<?> find(@PathVariable Integer id) throws ObjectNotFoundException{
 		Categoria obj = service.buscar(id);
 		return ResponseEntity.ok().body(obj);
 		
