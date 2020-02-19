@@ -28,13 +28,14 @@ import javassist.tools.rmi.ObjectNotFoundException;
 public class CategoriaResource {
 	@Autowired//instancia automaticamente
 	private CategoriaService service;
-	
+	//Busca
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) throws ObjectNotFoundException{
 		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 		
 	}
+	//Insere
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){
 		Categoria obj = service.fromDTO(objDto);
@@ -43,7 +44,7 @@ public class CategoriaResource {
 				.path("/{/id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+	//Altera
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid@RequestBody CategoriaDTO objDto,@PathVariable Integer id) throws ObjectNotFoundException{
 		Categoria obj = service.fromDTO(objDto);
@@ -51,18 +52,21 @@ public class CategoriaResource {
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
+	//Deleta
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException{
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 		
 	}
+	//Pega todos os clientes
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>>findAll(){
 		List<Categoria>list = service.findAll();
 		List<CategoriaDTO>listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
+	//Pega clientes com paginação
 	@RequestMapping(value="/page",method=RequestMethod.GET)
 	public ResponseEntity<Page<CategoriaDTO>>findPage(
 			@RequestParam(value="page",defaultValue="0")Integer page,
