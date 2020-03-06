@@ -9,12 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Query;
 //import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vanderlei.cursomc.domain.Categoria;
 import com.vanderlei.cursomc.domain.Produto;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer>{
+	@Transactional
 	//@Query("SELECT DISTINCT obj FROM Produto obj INNER JOIN obj.categorias cat Where obj.nome LIKE %:nome% AND cat IN :categorias")
 	Page<Produto> findDistinctByNomeContainingAndCategoriasIn(String nome,List<Categoria>categorias, Pageable pageRequest);
 }
